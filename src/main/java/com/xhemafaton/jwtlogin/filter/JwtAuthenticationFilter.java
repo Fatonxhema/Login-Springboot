@@ -2,6 +2,10 @@ package com.xhemafaton.jwtlogin.filter;
 
 import com.xhemafaton.jwtlogin.service.CustomUserDetailsService;
 import com.xhemafaton.jwtlogin.util.JwtUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,19 +15,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final CustomUserDetailsService customUserDetailService;
+    private final JwtUtil jwtUtil;
+
     @Autowired
-    private CustomUserDetailsService customUserDetailService;
-    @Autowired
-    private JwtUtil jwtUtil;
+    public JwtAuthenticationFilter(CustomUserDetailsService customUserDetailService, JwtUtil jwtUtil) {
+        this.customUserDetailService = customUserDetailService;
+        this.jwtUtil = jwtUtil;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //get the jwt token from request header
@@ -33,12 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = null;
 
         //check if token exist or has Bearer text
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 
             //extract jwt token from bearerToken
             token = bearerToken.substring(7);
 
-            try{
+            try {
                 //extract username from the token
                 username = jwtUtil.extractUsername(token);
 
@@ -46,21 +51,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
 
                 //security checks
-                if(username!=null && SecurityContextHolder.getContext().getAuthentication() == null){
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
                     SecurityContextHolder.getContext().setAuthentication(upat);
 
-                }else {
+                } else {
                     System.out.println("Invalid Token!!");
                 }
 
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }else {
+        } else {
             System.out.println("Invalid Bearer Token Format!!");
         }
 

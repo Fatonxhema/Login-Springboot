@@ -61,7 +61,7 @@ public class UserModel implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<AuthorityModel> authorityModels = new HashSet<>();
-        roles.forEach( role -> {
+        roles.forEach(role -> {
             authorityModels.add(new AuthorityModel(role.getName()));
         });
         return authorityModels;

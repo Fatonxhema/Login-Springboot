@@ -19,8 +19,8 @@ import java.util.function.Function;
 public class JwtUtil {
 
     @Value("${jwt.secret}")
-    private String SECRET_KEY;
-    @Value(("${jwt.token.expirationInMS}"))
+    private static String SECRET_KEY;
+    @Value("${jwt.token.expirationInMS}")
     private Integer tokenExpirationInMS;
 
     public String extractUsername(String token) {

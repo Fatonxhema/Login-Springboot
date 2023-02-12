@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RoleServiceImp implements RoleService{
+public class RoleServiceImp implements RoleService {
+
+    private final RoleRepository roleRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    public RoleServiceImp(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public RoleModel createRole(RoleModel roleModel) {
@@ -33,7 +37,7 @@ public class RoleServiceImp implements RoleService{
         List<RoleEntity> roleEntities = roleRepository.findAll();
         List<RoleModel> roleModels = new ArrayList<>();
         RoleModel roleModel = null;
-        for(RoleEntity re : roleEntities){
+        for (RoleEntity re : roleEntities) {
             roleModel = new RoleModel();
             BeanUtils.copyProperties(re, roleModel);
             roleModels.add(roleModel);
