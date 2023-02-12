@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "daf50f32-5cdd-47da-bcc2-8cd30bb619d4",
+		"name": "Login-JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15913806"
+	},
+	"item": [
+		{
+			"name": "CurrentUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXRvbmkiLCJleHAiOjE2NTg4NTE4MjgsImlhdCI6MTY1ODgyMTgyOH0.HD6yXKLwEFDXgAwkvkfSC5tIjiQETB8wWgHVnr6kujY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8099/api/currentUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"currentUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Role",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmkyIiwiZXhwIjoxNjU4MzQ0MDU1LCJpYXQiOjE2NTgzMTQwNTV9.GAbpfXvWtaIXweoYB3suQCPidF-UDQpuoXZR3IgD5ko",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":1,\r\n    \"name\":\"ROLE_ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/api/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Roles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXRvbmkiLCJleHAiOjE2NTgzNDMwOTYsImlhdCI6MTY1ODMxMzA5Nn0.xhoL7GKGYox4t3ajlpOANHq7UlK5DwAiE-80yP2rXwE",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8099/api/getAllRoles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"getAllRoles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"fatoni\",\r\n    \"password\":\"555555\",\r\n    \"firstName\":\"faton\",\r\n    \"lastName\":\"xhema\",\r\n    \"email\":\"admin@gmail.com\",\r\n    \"phone\":\"+3834000000\",\r\n    \"roles\":[\r\n        {\r\n            \"id\":1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"fatoni\",\r\n    \"password\":\"555555\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hello endpoint",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmk0IiwiZXhwIjoxNjU4MzQ0MTE0LCJpYXQiOjE2NTgzMTQxMTR9.4hfvon6noaL0EpTJVHdGZtZLGp2VjvaSZD6yvYtJTm0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8099/hello",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"hello"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Role",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8099/api/roles/1/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"api",
+						"roles",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
