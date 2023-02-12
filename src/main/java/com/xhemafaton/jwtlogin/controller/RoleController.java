@@ -2,6 +2,7 @@ package com.xhemafaton.jwtlogin.controller;
 
 import com.xhemafaton.jwtlogin.model.RoleModel;
 import com.xhemafaton.jwtlogin.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class RoleController {
 
     private final RoleService roleService;
-
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
