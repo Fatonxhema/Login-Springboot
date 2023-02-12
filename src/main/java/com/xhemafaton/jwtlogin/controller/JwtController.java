@@ -20,32 +20,39 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class JwtController {
+    private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtUtil jwtUtil;
+
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @PostMapping("/register")
-    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel){
-            UserModel userModel1 = customUserDetailsService.register(userModel);
-            return ResponseEntity.ok(userModel1);
+    public JwtController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtUtil = jwtUtil;
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel) {
+        UserModel userModel1 = customUserDetailsService.register(userModel);
+        return ResponseEntity.ok(userModel1);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> generateToken(@RequestBody @NotNull JwtRequest jwtRequest){
-        UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword());
+    public ResponseEntity<JwtResponse> generateToken(@RequestBody @NotNull JwtRequest jwtRequest) {
+        UsernamePasswordAuthenticationToken credentials =
+                new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         authenticationManager.authenticate(credentials);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-        String jwttoken = jwtUtil.generateToken(userDetails);
+        String jwtToken = jwtUtil.generateToken(userDetails);
 
-        JwtResponse response = new JwtResponse(jwttoken);
-        ResponseEntity responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
-        return responseEntity;
+        JwtResponse response = new JwtResponse(jwtToken);
+        return ResponseEntity.ok(response);
     }
+
     @GetMapping("/currentUser")
-    public UserModel getCurrentUser(@NotNull Principal principal){
+    public UserModel getCurrentUser(@NotNull Principal principal) {
         UserDetails userdetails = customUserDetailsService.loadUserByUsername(principal.getName());
         return (UserModel) userdetails;
     }

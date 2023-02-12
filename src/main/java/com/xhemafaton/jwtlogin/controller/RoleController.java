@@ -12,23 +12,26 @@ import java.util.List;
 @RequestMapping("/api")
 public class RoleController {
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
+
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public RoleModel createRole(@RequestBody RoleModel roleModel){
+    public RoleModel createRole(@RequestBody RoleModel roleModel) {
         return roleService.createRole(roleModel);
     }
 
     @GetMapping("/getAllRoles")
-    public List<RoleModel> getAllRoles(){
+    public List<RoleModel> getAllRoles() {
         return roleService.getAllRoles();
     }
 
     @PreAuthorize("hasRole('ADMIN') or principal.userId == #userId")
     @DeleteMapping("/roles/{userId}/{roleId}")
-    public void deleteRole(@PathVariable Long userId, @PathVariable Long roleId){
+    public void deleteRole(@PathVariable Long userId, @PathVariable Long roleId) {
         roleService.deleteRoleById(roleId);
     }
 }

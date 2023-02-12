@@ -12,7 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
     @Bean
-    public Docket appApi(){
+    public Docket appApi() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select().apis(RequestHandlerSelectors.basePackage("com.xhemafaton.jwtlogin.controller"))
                 .paths((PathSelectors.regex("/.*"))).build();
@@ -20,8 +20,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry)
-    {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //enabling swagger-ui part for visual documentation
         registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");

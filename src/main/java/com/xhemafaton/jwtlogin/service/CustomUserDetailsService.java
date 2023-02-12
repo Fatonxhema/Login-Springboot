@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -21,22 +22,27 @@ import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private RoleRepository roleRepository;
     @Lazy
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public CustomUserDetailsService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public UserModel register(UserModel userModel) {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userModel, userEntity);//it does not do a deep copy
 
         Set<RoleEntity> roleEntities = new HashSet<>();
         //fetch every role from DB based on role id and than set this role to user entity roles
-        for(RoleModel rm :userModel.getRoles()){
+        for (RoleModel rm : userModel.getRoles()) {
             Optional<RoleEntity> optRole = roleRepository.findById(rm.getId());
-            if(optRole.isPresent()){
+            if (optRole.isPresent()) {
                 roleEntities.add(optRole.get());
             }
         }
@@ -49,7 +55,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         //convert RoleEntities to RoleModels
         Set<RoleModel> roleModels = new HashSet<>();
         RoleModel rm = null;
-        for(RoleEntity re :userEntity.getRoles()){
+        for (RoleEntity re : userEntity.getRoles()) {
             rm = new RoleModel();
             rm.setName(re.getName());
             rm.setId(re.getId());
@@ -58,11 +64,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         userModel.setRoles(roleModels);
         return userModel;
     }
+
     //validate the user by username
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserEntity userEntity = userRepository.findByUsername(username);
-        if (userEntity==null){
+        if (userEntity == null) {
             throw new UsernameNotFoundException("Username not found");
         }
         UserModel userModel = new UserModel();
@@ -71,7 +78,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         //convert RoleEntities to RoleModels
         Set<RoleModel> roleModels = new HashSet<>();
         RoleModel rm = null;
-        for(RoleEntity re :userEntity.getRoles()){
+        for (RoleEntity re : userEntity.getRoles()) {
             rm = new RoleModel();
             rm.setName(re.getName());
             rm.setId(re.getId());
