@@ -6,6 +6,8 @@ import com.xhemafaton.jwtlogin.model.RoleModel;
 import com.xhemafaton.jwtlogin.model.UserModel;
 import com.xhemafaton.jwtlogin.repository.RoleRepository;
 import com.xhemafaton.jwtlogin.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,18 +23,13 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     @Lazy
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public CustomUserDetailsService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public UserModel register(UserModel userModel) {
         UserEntity userEntity = new UserEntity();
@@ -62,6 +59,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             roleModels.add(rm);
         }
         userModel.setRoles(roleModels);
+        log.info("User with {} created", userModel.getUsername());
         return userModel;
     }
 

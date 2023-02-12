@@ -5,6 +5,7 @@ import com.xhemafaton.jwtlogin.model.JwtResponse;
 import com.xhemafaton.jwtlogin.model.UserModel;
 import com.xhemafaton.jwtlogin.service.CustomUserDetailsService;
 import com.xhemafaton.jwtlogin.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +20,11 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class JwtController {
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtil jwtUtil;
-
-    @Autowired
-    public JwtController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.customUserDetailsService = customUserDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<UserModel> register(@RequestBody UserModel userModel) {

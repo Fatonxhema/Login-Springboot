@@ -1,6 +1,7 @@
 package com.xhemafaton.jwtlogin.config;
 
 import com.xhemafaton.jwtlogin.filter.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class JwtConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
-
-    @Autowired
-    public JwtConfig(AuthenticationProvider authenticationProvider, JwtAuthenticationFilter jwtFilter, JwtAuthEntryPoint jwtAuthEntryPoint) {
-        this.authenticationProvider = authenticationProvider;
-        this.jwtFilter = jwtFilter;
-        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
-    }
 
     //Controls the endpoint which are permitted and which aren't
     @Bean
