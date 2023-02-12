@@ -39,14 +39,15 @@ public class JwtController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> generateToken(@RequestBody @NotNull JwtRequest jwtRequest) {
-        UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword());
+        UsernamePasswordAuthenticationToken credentials =
+                new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         authenticationManager.authenticate(credentials);
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-        String jwttoken = jwtUtil.generateToken(userDetails);
+        String jwtToken = jwtUtil.generateToken(userDetails);
 
-        JwtResponse response = new JwtResponse(jwttoken);
+        JwtResponse response = new JwtResponse(jwtToken);
         return ResponseEntity.ok(response);
     }
 

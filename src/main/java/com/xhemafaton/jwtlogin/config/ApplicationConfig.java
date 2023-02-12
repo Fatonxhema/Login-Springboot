@@ -1,6 +1,7 @@
 package com.xhemafaton.jwtlogin.config;
 
 import com.xhemafaton.jwtlogin.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +15,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfig {
 
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    @Autowired
+    public ApplicationConfig(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByUsername(username);
+        return repository::findByUsername;
 
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
