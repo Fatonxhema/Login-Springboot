@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,18 +25,20 @@ public class JwtConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()//disable CSRF
-                .cors()
-                .disable()//disable CORS
+                .csrf().disable()//disable CSRF
+                .cors().disable()//disable CORS
                 .authorizeHttpRequests()
                 .requestMatchers("/api/login", "/api/register").permitAll()//allow only access in this endpoint
-                .anyRequest().authenticated()//other request should be authenticated
+                .anyRequest()
+                .authenticated()//other request should be authenticated
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint)
+                .exceptionHandling()
+                    .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// Independent requests and server don't have to manage sessions
-        http.authenticationProvider(authenticationProvider)
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Independent requests and server don't have to manage sessions
+                .and()
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
